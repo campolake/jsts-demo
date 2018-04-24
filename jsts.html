@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>jsts demo</title>
+	<link rel="stylesheet" type="text/css" href="js/ol.css">
+</head>
+<body>
+	<button id="btnSplit">分割</button>
+	<div id="map"></div>
+	<script type="text/javascript" src="js/jquery-1.11.3.js"></script>
+	<script type="text/javascript" src="js/jsts.min.js"></script>
+	<script type="text/javascript" src="js/ol-debug.js"></script>
+	<script type="text/javascript">
+		var map = new ol.Map({
+        layers: [
+          new ol.layer.Tile({
+            source: new ol.source.OSM()
+          })
+        ],
+        target: 'map',
+        controls: ol.control.defaults({
+          attributionOptions: {
+            collapsible: false
+          }
+        }),
+        view: new ol.View({
+          center: [0, 0],
+          zoom: 2
+        })
+     	 });
+
+
+	     
+	    var source = new ol.source.Vector();
+	    var vector = new ol.layer.Vector({
+	        source: source
+	    });
+
+	    map.addLayer(vector);
+
+		
+
+	    var draw; // global so we can remove them later
+	    draw = new ol.interaction.Draw({
+	        source: source,
+	        type: "Polygon"
+	    });
+	    draw.setActive(true);
+	    map.addInteraction(draw);
+
+
+	    var drawLine; // global so we can remove them later
+	    drawLine = new ol.interaction.Draw({
+	        source: source,
+	        type: "LineString"
+	    });
+	    drawLine.setActive(false);
+	    map.addInteraction(drawLine);
+
+	    var currentFeature;
+	    draw.on("drawend",function(evt){
+	    	currentFeature = evt.Feature;
+	    });
+
+	    $("#btnSplit").click(function(){
+	    	 drawLine.setActive(true);
+	    });
+
+
+		// var reader = new jsts.io.WKTReader();
+		// var writer = new jsts.io.WKTWriter();
+		// var parser = new jsts.io.OL3Parser();
+
+		// var a = reader.read('POLYGON ((1 1, 1 9, 9 9, 9 1, 1 1))');
+		// var b = reader.read('LINESTRING (0.5 5, 9.6 5, 9.6 3.9)');
+		// var union = a.getExteriorRing().union(b);
+
+		// var polygonizer = new jsts.operation.polygonize.Polygonizer();
+		// polygonizer.add(union);
+
+		// var polygons = polygonizer.getPolygons();
+		// for (var i = polygons.iterator(); i.hasNext();) {
+		//     var polygon = i.next();
+		//     polygon = parser.write(polygon);
+		//     polygon = new ol.Feature(polygon);
+		//     source.addFeature(polygon);
+		// }
+
+	</script>
+</body>
+</html>

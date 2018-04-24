@@ -1,0 +1,7 @@
+1:自定义方法
+
+ ol.interaction.Draw.prototype.removePoint
+
+
+
+2:通过ol-debug 压缩 ol.js
